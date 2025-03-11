@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: retaguarda-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: retaguarda-app
+  template:
+    metadata:
+      labels:
+        app: retaguarda-app
+    spec:
+      containers:
+      - name: tomcat
+        image: devopsbemfacil/retaguarda_qa:1
+        ports:
+        - containerPort: 8080
+        envFrom:
+        - configMapRef:
+            name: retaguarda-configmap
+        resources:
+          limits:
+            cpu: 100m
+            memory: 500Mi
