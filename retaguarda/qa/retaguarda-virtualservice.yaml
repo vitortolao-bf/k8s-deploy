@@ -1,0 +1,20 @@
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: retaguarda
+spec:
+  gateways:
+  - istio-system/retaguarda-gateway
+  hosts:
+  - sistema.poc.bemfacil.digital
+  - retaguarda-service.retaguarda.svc.cluster.local
+  http:
+  - match:
+    - uri:
+        prefix: /servlet/login/
+    route:
+    - destination:
+        host: retaguarda-service.retaguarda.svc.cluster.local
+        port:
+          number: 8000
+        

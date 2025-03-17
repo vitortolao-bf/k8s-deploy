@@ -1,0 +1,39 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: retaguarda-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+    nginx.ingress.kubernetes.io/ssl-certificate-cache-duration: "300s"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: sistema.poc.bemfacil.digital
+    http:
+      paths:
+      - path: /servlet/login/
+        pathType: Prefix
+        backend:
+          service:
+            name: retaguarda-service
+            port:
+              number: 80
+  - host: sistema.poc.bemfacil.digital
+    http:
+      paths:
+      - path: /servlet/login/
+        pathType: Prefix
+        backend:
+          service:
+            name: retaguarda-service
+            port:
+              number: 443
+  tls:
+  - hosts:
+    - sistema.poc.bemfacil.digital
+    secretName: tls-retaguarda
