@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: retaguarda
-        image: devopsbemfacil/retaguarda_qa:1.4
+        image: devopsbemfacil/retaguarda_qa:1.5
         ports:
         - containerPort: 8080
         envFrom:
