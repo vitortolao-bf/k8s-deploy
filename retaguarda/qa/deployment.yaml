@@ -21,6 +21,9 @@ spec:
         - configMapRef:
             name: retaguarda-configmap
         resources:
+          request:
+            cpu: "500m"
+            memory: "512Mi"
           limits:
-            cpu: 150m
-            memory: 700Mi
+            cpu: "1000m"
+            memory: "1Gi"
