@@ -30,3 +30,9 @@ spec:
             port: 8080
           initialDelaySeconds: 45
           periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 45
+          periodSeconds: 10
