@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: retaguarda-cert
+  namespace: retaguarda
+spec:
+  secretName: retaguarda-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  dnsNames:
+    - sistema.poc.bemfacil.digital

@@ -3,7 +3,7 @@ apiVersion: v1
 metadata:
   name: retaguarda-configmap
 data:
-  GX_CONNECTION-DEFAULT-DB: "10.87.208.38"
+  GX_CONNECTION-DEFAULT-DB: "10.1.0.13"
   GX_CONNECTION-DEFAULT-DATASOURCE: "Bemfacil_qa"
   GX_CONNECTION-DEFAULT-PORT: "1433"
   GX_CONNECTION-DEFAULT-USER: "sqlserver"
