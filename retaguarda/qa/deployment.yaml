@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: retaguarda-app
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: retaguarda-app
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: tomcat
-        image: devopsbemfacil/retaguarda_qa:1.4
+        image: devopsbemfacil/retaguarda_qa:1.5.3-rds-priv
         ports:
         - containerPort: 8080
         envFrom:
@@ -22,5 +22,5 @@ spec:
             name: retaguarda-configmap
         resources:
           limits:
-            cpu: 100m
-            memory: 500Mi
+            cpu: "1000m"
+            memory: "1Gi"

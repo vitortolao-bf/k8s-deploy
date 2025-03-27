@@ -1,0 +1,15 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: memory-scaledobject
+  namespace: retaguarda
+spec:
+  scaleTargetRef:
+    name: retaguarda-app
+  minReplicaCount: 1  # Set a minimum replica count to 1
+  maxReplicaCount: 3
+  triggers:
+  - type: memory
+    metricType: Utilization # Allowed types are 'Utilization' or 'AverageValue'
+    metadata:
+      value: "80"
