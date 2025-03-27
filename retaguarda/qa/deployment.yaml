@@ -13,7 +13,6 @@ spec:
         app: retaguarda-app
     spec:
       containers:
-
       - name: tomcat
         image: devopsbemfacil/retaguarda_qa:1.5.3-rds-priv
         ports:
