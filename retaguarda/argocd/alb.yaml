@@ -1,0 +1,53 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: argocd-ingress
+  namespace: argocd
+  annotations:    
+    # Esquema interno ou externo
+    alb.ingress.kubernetes.io/load-balancer-name: alb-argocd-poc
+    external-dns.alpha.kubernetes.io/hostname: "argocd.poc.bemfacil.digital"
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+
+    # Configurações de SSL
+    # cert-manager.io/cluster-issuer: letsencrypt-prod
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:343236792564:certificate/d2669d5e-1817-48ce-9560-fe18b7086895
+    alb.ingress.kubernetes.io/ssl-policy: ELBSecurityPolicy-TLS13-1-2-2021-06
+
+    # Configurações do ALB
+    # alb.ingress.kubernetes.io/healthcheck-path: /healthz
+    # alb.ingress.kubernetes.io/healthcheck-port: '8080'
+
+    # Configurações específicas do ArgoCD
+    alb.ingress.kubernetes.io/backend-protocol: HTTPS
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
+    
+spec:
+  ingressClassName: alb
+  rules:
+  - host: argocd.poc.bemfacil.digital
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: argocd-server
+            port:
+              number: 80
+  - host: argocd.poc.bemfacil.digital
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: argocd-server
+            port:
+              number: 443
+  # tls:
+  # - hosts:
+  #   - argocd.poc.bemfacil.digital
+  #   secretName: argocd-tls
