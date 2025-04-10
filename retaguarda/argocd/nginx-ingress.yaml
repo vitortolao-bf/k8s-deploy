@@ -5,17 +5,16 @@ metadata:
   name: argocd-ingress
   namespace: argocd
   annotations:
-    cert-manager.io/cluster-issuer: "letsencrypt-prod"
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/ssl-passthrough: "true"
-    nginx.ingress.kubernetes.io/ssl-certificate-cache-duration: "300s"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-certificate-cache-duration: "300s"
     nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"  # Use HTTPS para o Argo CD
 spec:
   ingressClassName: nginx
   rules:
-  - host: cdreta.poc.bemfacil.digital
+  - host: argocd.bemfacil.digital
     http:
       paths:
       - path: /
@@ -25,7 +24,7 @@ spec:
             name: argocd-server
             port:
               number: 80
-  - host: cdreta.poc.bemfacil.digital
+  - host: argocd.bemfacil.digital
     http:
       paths:
       - path: /
@@ -37,5 +36,5 @@ spec:
               number: 443
   tls:
   - hosts:
-    - cdreta.poc.bemfacil.digital
-    secretName: tls-argocd
+    - argocd.bemfacil.digital
+    secretName: argocd-tls

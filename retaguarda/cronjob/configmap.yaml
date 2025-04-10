@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: teste-scripts
+data:
+  script1.sh: |
+    #!/bin/bash
+    echo "Script 1 executado em $(date)"
+  script2.py: |
+    #!/usr/bin/env python3
+    print("Script Python executado")

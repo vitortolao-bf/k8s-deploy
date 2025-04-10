@@ -4,11 +4,11 @@ metadata:
   name: "datadog"
 spec:
   global:
-    clusterName: "cluster-bf-retaguarda-poc"
-    registry: "gcr.io/datadoghq"
+    clusterName: "bf-retaguarda-poc"
+    registry: "public.ecr.aws/datadog"
     site: "datadoghq.com"
     tags:
-      - "env:qa"
+      - "env:hml"
       - "poc"
     credentials:
       apiSecret:
@@ -22,7 +22,6 @@ spec:
           - "retaguarda"
         libVersions:
           java: "1"
-          js: "5"
     logCollection:
       enabled: true
       containerCollectAll: true
