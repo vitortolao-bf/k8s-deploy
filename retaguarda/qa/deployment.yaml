@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: tomcat
-        image: devopsbemfacil/retaguarda_qa:1.5.3-rds-priv
+        image: devopsbemfacil/retaguarda_qa:1.5.5-rds-priv
         ports:
         - containerPort: 8080
         envFrom:
