@@ -54,5 +54,5 @@ jobs:
 
     - name: Sync retaguarda App
       run: |
-        argocd app sync retaguarda-app
-        argocd app wait retaguarda-app --health --timeout 300
+        argocd app sync retaguarda-app --prune --dry-run
+        argocd app wait retaguarda-app --health --operation --timeout 300
