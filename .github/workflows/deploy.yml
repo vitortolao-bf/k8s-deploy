@@ -1,0 +1,47 @@
+name: Deploy siwi-customers via Argo CD
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'retaguarda/qa/**'
+
+jobs:
+  validate-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Kustomize
+      run: |
+        curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
+        sudo mv kustomize /usr/local/bin
+
+    - name: Validate Kustomize (qa)
+      run: kustomize build retaguarda/qa
+
+    - name: Render and validate with kubectl dry-run
+      run: |
+        sudo apt-get update && sudo apt-get install -y kubectl
+        kustomize build retaguarda/qa | kubectl apply --dry-run=client -f -
+
+    - name: Install Argo CD CLI
+      run: |
+        curl -sSL -o /usr/local/bin/argocd https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
+        chmod +x /usr/local/bin/argocd
+
+    - name: Login to Argo CD
+      env:
+        ARGOCD_SERVER: ${{ secrets.ARGOCD_SERVER }}
+        ARGOCD_USERNAME: ${{ secrets.ARGOCD_USERNAME }}
+        ARGOCD_PASSWORD: ${{ secrets.ARGOCD_PASSWORD }}
+      run: |
+        argocd login "$ARGOCD_SERVER" --username "$ARGOCD_USERNAME" --password "$ARGOCD_PASSWORD" --insecure
+
+    - name: Sync retaguarda App
+      run: |
+        argocd app sync retaguarda-app
+        argocd app wait retaguarda-app --health --timeout 300
