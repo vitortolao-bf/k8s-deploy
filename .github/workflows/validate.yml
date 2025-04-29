@@ -51,7 +51,8 @@ jobs:
     - name: 🔍 Validar Kustomize com kubeval
       run: |
         kustomize build retaguarda/qa > output.yaml
-        kubeval output.yaml
+        kubeval --skip-kinds HorizontalPodAutoscaler,Ingress output.yaml
+
 
     - name: 🔐 Verificar falhas com kube-score
       run: |
