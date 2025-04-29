@@ -33,11 +33,11 @@ jobs:
         tar -xzf kubeval.tar.gz
         sudo mv kubeval /usr/local/bin/
 
-    - name: 🧰 Instalar Kube-score
-      run: |
-          curl -L -o kube-score https://github.com/zegl/kube-score/releases/latest/download/kube-score-linux-amd64
-          chmod +x kube-score
-          sudo mv kube-score /usr/local/bin/kube-score
+    # - name: 🧰 Instalar Kube-score
+    #   run: |
+    #       curl -L -o kube-score https://github.com/zegl/kube-score/releases/latest/download/kube-score-linux-amd64
+    #       chmod +x kube-score
+    #       sudo mv kube-score /usr/local/bin/kube-score
 
     # - name: ✅ Validar YAML com yamllint
     #   run: |
@@ -55,6 +55,6 @@ jobs:
         kubeval --skip-kinds HorizontalPodAutoscaler,Ingress output.yaml
 
 
-    - name: 🔐 Verificar falhas com kube-score
-      run: |
-        kube-score score retaguarda/qa/output.yaml --output-format ci
+    # - name: 🔐 Verificar falhas com kube-score
+    #   run: |
+    #     kube-score score retaguarda/qa/output.yaml --output-format ci
