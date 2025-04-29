@@ -33,9 +33,7 @@ jobs:
     - name: Render and validate with kubectl dry-run
       run: |
         sudo apt-get update && sudo apt-get install -y kubectl
-        mkdir -p $HOME/.kube
-        echo "${{ secrets.KUBECONFIG_DATA }}" > $HOME/.kube/config
-        chmod 600 $HOME/.kube/config
+        aws eks update-kubeconfig --name bf-retaguarda-poc --region us-east-1
         kustomize build retaguarda/qa | kubectl apply --dry-run=client -f -
 
     - name: Install Argo CD CLI
