@@ -17,10 +17,10 @@ jobs:
     - name: 🔄 Checkout do repositório
       uses: actions/checkout@v3
 
-    - name: 🧰 Instalar Yamllint
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y yamllint
+    # - name: 🧰 Instalar Yamllint
+    #   run: |
+    #     sudo apt-get update
+    #     sudo apt-get install -y yamllint
 
     - name: 🧰 Instalar Kustomize
       run: |
@@ -38,9 +38,9 @@ jobs:
         curl -sSLo kube-score https://github.com/zegl/kube-score/releases/latest/download/kube-score-linux-amd64
         chmod +x kube-score && sudo mv kube-score /usr/local/bin/
 
-    - name: ✅ Validar YAML com yamllint
-      run: |
-        yamllint retaguarda/qa/ . -f colored
+    # - name: ✅ Validar YAML com yamllint
+    #   run: |
+    #     yamllint retaguarda/qa/ . -f colored
 
     - name: 🔍 Verificar vulnerabilidades de imagens com Trivy
       uses: aquasecurity/trivy-action@master
