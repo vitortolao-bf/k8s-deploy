@@ -1,0 +1,52 @@
+name: Validar Kustomize e Segurança Kubernetes
+
+on:
+  pull_request:
+    paths:
+    - "retaguarda/qa/**"
+
+  push:
+    branches:
+    - main
+
+jobs:
+  validar-kustomize:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 🔄 Checkout do repositório
+      uses: actions/checkout@v3
+
+    - name: 🧰 Instalar Yamllint
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y yamllint
+
+    - name: 🧰 Instalar Kustomize
+      run: |
+        curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
+        sudo mv kustomize /usr/local/bin
+
+    - name: 🧰 Instalar Kubeval
+      run: |
+        curl -sSLo kubeval.tar.gz https://github.com/instrumenta/kubeval/releases/latest/download/kubeval-linux-amd64.tar.gz
+        tar -xzf kubeval.tar.gz
+        sudo mv kubeval /usr/local/bin/
+
+    - name: 🧰 Instalar Kube-score
+      run: |
+        curl -sSLo kube-score https://github.com/zegl/kube-score/releases/latest/download/kube-score-linux-amd64
+        chmod +x kube-score && sudo mv kube-score /usr/local/bin/
+
+    - name: ✅ Validar YAML com yamllint
+      run: |
+        yamllint . -f colored
+
+    - name: 🔍 Validar Kustomize com kubeval
+      run: |
+        kustomize build retaguarda/qa > output.yaml
+        kubeval output.yaml
+
+    - name: 🔐 Verificar falhas com kube-score
+      run: |
+        kube-score score retaguarda/qa/output.yaml --output-format ci
