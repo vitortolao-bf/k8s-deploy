@@ -1,5 +1,6 @@
 # k8s-deploy
 Deploy applications in Kubernetes 
 
-![image](https://github.com/user-attachments/assets/c270ef56-3015-444a-9d90-d31fda6f7937)
+![image](https://github.com/user-attachments/assets/08a9ca9d-600f-442c-8a8f-04b490c4a380)
+
 
