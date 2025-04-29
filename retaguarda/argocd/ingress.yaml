@@ -4,20 +4,20 @@ metadata:
   name: argocd-ingress
   namespace: argocd
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: "argocd.poc.bemfacil.com.br"
+    external-dns.alpha.kubernetes.io/hostname: "argocd.bemfacil.com.br"
     alb.ingress.kubernetes.io/load-balancer-name: k8s-alb-argocd-poc
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/backend-protocol: HTTPS
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
-    alb.ingress.kubernetes.io/subnets: subnet-0bf69d5c218b573a5, subnet-0fa2ecf4677708161
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
     alb.ingress.kubernetes.io/ssl-redirect: '443'
+    alb.ingress.kubernetes.io/subnets: subnet-0d50e92a7679e936a, subnet-0687b1954ba83c33a
     alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:343236792564:certificate/d2669d5e-1817-48ce-9560-fe18b7086895
-    alb.ingress.kubernetes.io/actions.ssl-redirect: '{"Type": "redirect", "RedirectConfig": { "Protocol": "HTTPS", "Port": "443", "StatusCode": "HTTP_301"}}'
+    alb.ingress.kubernetes.io/ssl-policy: ELBSecurityPolicy-TLS-1-2-2017-01
 spec:
   ingressClassName: alb
   rules:
-  - host: argocd.poc.bemfacil.digital
+  - host: argocd.bemfacil.digital
     http:
       paths:
       - path: /
