@@ -38,6 +38,7 @@ jobs:
     - name: Obter credenciais do cluster EKS
       run: | 
         aws eks update-kubeconfig --name bf-retaguarda-poc --region us-east-1
+        kubectl port-forward svc/argocd-server -n argocd 8080:443
         
     - name: Install Argo CD CLI
       run: |
@@ -54,5 +55,5 @@ jobs:
 
     - name: Sync retaguarda App
       run: |
-        argocd app sync retaguarda-app --prune --dry-run
+        argocd app sync retaguarda-app --prune --force
         argocd app wait retaguarda-app --health --operation --timeout 300
