@@ -20,7 +20,7 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v3
+      uses: aws-actions/configure-aws-credentials@v2
       with:
         role-to-assume: arn:aws:iam::343236792564:role/GitHubActionsEKSDeployRole
         role-session-name: github-actions
