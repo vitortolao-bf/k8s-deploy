@@ -40,7 +40,13 @@ jobs:
 
     - name: ✅ Validar YAML com yamllint
       run: |
-        yamllint . -f colored
+        yamllint retaguarda/qa/ . -f colored
+
+    - name: 🔍 Verificar vulnerabilidades de imagens com Trivy
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: config
+        scan-ref: .
 
     - name: 🔍 Validar Kustomize com kubeval
       run: |
