@@ -1,4 +1,4 @@
-name: Deploy siwi-customers via Argo CD
+name: Deploy Retaguarda via Argo CD
 
 on:
   push:
