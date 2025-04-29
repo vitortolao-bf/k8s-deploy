@@ -28,12 +28,6 @@ jobs:
         tar -xzf kubeval.tar.gz
         sudo mv kubeval /usr/local/bin/
     
-    - name: 🧰 Instalar kube-score
-      run: |
-        curl -L -o kube-score https://github.com/zegl/kube-score/releases/latest/download/kube-score-linux-amd64
-        chmod +x kube-score
-        sudo mv kube-score /usr/local/bin/kube-score
-
     - name: 🔍 Verificar vulnerabilidades de imagens com Trivy
       uses: aquasecurity/trivy-action@master
       with:
@@ -44,23 +38,11 @@ jobs:
       run: |
         kustomize build retaguarda/qa > output.yaml
         kubeval --skip-kinds HorizontalPodAutoscaler,Ingress output.yaml
+    
+    - name: 🔍 kube-score check
+      uses: piraces/kube-score-ga@v0.1.3
+      with:
+        manifests-folders: './retaguarda/qa/*.yaml'
 
-    - name: 🔐 Verificar falhas com kube-score
-      run: |
-          kube-score score retaguarda/qa/output.yaml --output-format json > result.json
 
-          criticals=$(jq '[.[] | .grade | select(. == "critical")] | length' result.json)
-
-          echo "Erros críticos encontrados: $criticals"
-
-          if [ "$criticals" -gt 0 ]; then
-            echo "Falha no kube-score devido a problemas críticos."
-            exit 1
-          else
-            echo "Nenhum problema crítico encontrado."
-          fi
-
-    # - name: 🔐 Verificar falhas com kube-score
-    #   run: |
-    #     kube-score score retaguarda/qa/output.yaml --output-format ci
     
