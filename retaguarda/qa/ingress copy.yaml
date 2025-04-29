@@ -4,23 +4,32 @@ metadata:
   name: retaguarda-ingress
   namespace: retaguarda
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: "retaguarda.bemfacil.digital"
+    # Configurações do ALB
+    external-dns.alpha.kubernetes.io/hostname: "retaguarda.poc.bemfacil.digital"
     alb.ingress.kubernetes.io/load-balancer-name: k8s-alb-retaguarda-poc
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
+    # alb.ingress.kubernetes.io/backend-protocol: HTTP
+    # alb.ingress.kubernetes.io/success-codes: '200-499'
     alb.ingress.kubernetes.io/subnets: subnet-0bf69d5c218b573a5, subnet-0fa2ecf4677708161
+
+    # Configurações de health check
     alb.ingress.kubernetes.io/healthcheck-path: /login
     alb.ingress.kubernetes.io/healthcheck-port: "8080"
+    # alb.ingress.kubernetes.io/healthcheck-interval-seconds: "30"
+    # alb.ingress.kubernetes.io/healthcheck-timeout-seconds: "5"
+
+    # Opcional: SSL (descomente e ajuste se tiver certificado)
+    # alb.ingress.kubernetes.io/ssl-redirect: '443'
     alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:343236792564:certificate/d2669d5e-1817-48ce-9560-fe18b7086895
     alb.ingress.kubernetes.io/ssl-policy: ELBSecurityPolicy-TLS-1-2-2017-01
-    # Adicione redirecionamento HTTP->HTTPS
-    alb.ingress.kubernetes.io/ssl-redirect: '443'
+    # alb.ingress.kubernetes.io/actions.ssl-redirect: '{"Type": "redirect", "RedirectConfig": { "Protocol": "HTTPS", "Port": "443", "StatusCode": "HTTP_301"}}'
 
 spec:
   ingressClassName: alb
   rules:
-  - host: retaguarda.bemfacil.digital
+  - host: retaguarda.poc.bemfacil.digital
     http:
       paths:
       - path: /
