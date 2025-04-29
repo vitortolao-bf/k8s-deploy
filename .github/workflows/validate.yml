@@ -17,11 +17,6 @@ jobs:
     - name: 🔄 Checkout do repositório
       uses: actions/checkout@v3
 
-    # - name: 🧰 Instalar Yamllint
-    #   run: |
-    #     sudo apt-get update
-    #     sudo apt-get install -y yamllint
-
     - name: 🧰 Instalar Kustomize
       run: |
         curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
@@ -32,16 +27,12 @@ jobs:
         curl -sSLo kubeval.tar.gz https://github.com/instrumenta/kubeval/releases/latest/download/kubeval-linux-amd64.tar.gz
         tar -xzf kubeval.tar.gz
         sudo mv kubeval /usr/local/bin/
-
-    # - name: 🧰 Instalar Kube-score
-    #   run: |
-    #       curl -L -o kube-score https://github.com/zegl/kube-score/releases/latest/download/kube-score-linux-amd64
-    #       chmod +x kube-score
-    #       sudo mv kube-score /usr/local/bin/kube-score
-
-    # - name: ✅ Validar YAML com yamllint
-    #   run: |
-    #     yamllint retaguarda/qa/ . -f colored
+    
+    - name: 🧰 Instalar kube-score
+      run: |
+        curl -L -o kube-score https://github.com/zegl/kube-score/releases/latest/download/kube-score-linux-amd64
+        chmod +x kube-score
+        sudo mv kube-score /usr/local/bin/kube-score
 
     - name: 🔍 Verificar vulnerabilidades de imagens com Trivy
       uses: aquasecurity/trivy-action@master
@@ -54,7 +45,22 @@ jobs:
         kustomize build retaguarda/qa > output.yaml
         kubeval --skip-kinds HorizontalPodAutoscaler,Ingress output.yaml
 
+    - name: 🔐 Verificar falhas com kube-score
+      run: |
+          kube-score score retaguarda/qa/output.yaml --output-format json > result.json
+
+          criticals=$(jq '[.[] | .grade | select(. == "critical")] | length' result.json)
+
+          echo "Erros críticos encontrados: $criticals"
+
+          if [ "$criticals" -gt 0 ]; then
+            echo "Falha no kube-score devido a problemas críticos."
+            exit 1
+          else
+            echo "Nenhum problema crítico encontrado."
+          fi
 
     # - name: 🔐 Verificar falhas com kube-score
     #   run: |
     #     kube-score score retaguarda/qa/output.yaml --output-format ci
+    
