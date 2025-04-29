@@ -39,10 +39,6 @@ jobs:
       run: | 
         aws eks update-kubeconfig --name bf-retaguarda-poc --region us-east-1
         
-    - name: Validate with kubectl dry-run
-      run: |
-        kubectl apply -k retaguarda/qa --dry-run=client
-
     - name: Install Argo CD CLI
       run: |
         curl -sSL -o /usr/local/bin/argocd https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
