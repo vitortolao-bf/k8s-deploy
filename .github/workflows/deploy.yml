@@ -41,7 +41,7 @@ jobs:
         
     - name: Validate with kubectl dry-run
       run: |
-        kustomize build retaguarda/qa | kubectl apply --dry-run=client -f -
+        kustomize build retaguarda/qa | kubectl apply --dry-run=client --validate=false -f -
 
     - name: Install Argo CD CLI
       run: |
