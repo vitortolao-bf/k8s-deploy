@@ -35,10 +35,9 @@ jobs:
 
     - name: 🧰 Instalar Kube-score
       run: |
-        curl -L -o kube-score https://github.com/zegl/kube-score/releases/latest/download/kube-score-linux-amd64
-        chmod +x kube-score
-        sudo mv kube-score /usr/local/bin/kube-score
-
+          curl -L -o kube-score https://github.com/zegl/kube-score/releases/latest/download/kube-score-linux-amd64
+          chmod +x kube-score
+          sudo mv kube-score /usr/local/bin/kube-score
 
     # - name: ✅ Validar YAML com yamllint
     #   run: |
