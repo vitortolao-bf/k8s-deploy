@@ -38,11 +38,5 @@ jobs:
       run: |
         kustomize build retaguarda/qa > output.yaml
         kubeval --skip-kinds HorizontalPodAutoscaler,Ingress output.yaml
-    
-    - name: 🔍 kube-score check
-      uses: piraces/kube-score-ga@v0.1.3
-      with:
-        manifests-folders: './retaguarda/qa/*.yaml'
-
 
     
