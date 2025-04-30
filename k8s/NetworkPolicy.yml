@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-from-same-app
+  namespace: retaguarda
+spec:
+  podSelector:
+    matchLabels:
+      app: retaguarda-app # this should match the pod you want to protect
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          access: allowed # only pods with this label can talk to the pod
