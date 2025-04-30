@@ -1,0 +1,43 @@
+# .github/workflows/kubescape-static-scan.yml
+name: Kubescape YAML Static Scan
+
+on:
+  pull_request:
+    paths:
+      - '**/*.yaml'
+
+jobs:
+  kubescape:
+    runs-on: ubuntu-latest
+    name: Static YAML Security Scan
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Kubescape
+        run: |
+          curl -s https://raw.githubusercontent.com/kubescape/kubescape/master/install.sh | /bin/bash
+
+      - name: Run Kubescape scan
+        run: |
+          mkdir -p kubescape-reports
+          kubescape scan framework nsa --input . \
+            --format junit \
+            --output kubescape-reports/kubescape-report.xml \
+            --fail-threshold 40
+
+      - name: Upload Kubescape report artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: kubescape-report
+          path: kubescape-reports/kubescape-report.xml
+
+      - name: Publish report to GitHub UI
+        uses: dorny/test-reporter@v1
+        if: always() # garante que execute mesmo se o job anterior falhar
+        with:
+          name: Kubescape Report
+          path: kubescape-reports/kubescape-report.xml
+          reporter: java-junit
+          fail-on-error: false
