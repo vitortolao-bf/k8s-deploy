@@ -16,6 +16,10 @@ spec:
       - name: tomcat
         image: 343236792564.dkr.ecr.us-east-1.amazonaws.com/bf-retaguarda:1.5.8-rds-priv
         imagePullPolicy: Always
+        securityContext:
+            runAsUser: 1000  # Non-root user ID
+            runAsGroup: 1000  # Non-root group ID
+            allowPrivilegeEscalation: false
         ports:
         - containerPort: 8080
         envFrom:
@@ -33,7 +37,3 @@ spec:
         securityContext:
           readOnlyRootFilesystem: true
           runAsNonRoot: true
-          allowPrivilegeEscalation: false
-          capabilities:
-            drop:
-            - ALL
