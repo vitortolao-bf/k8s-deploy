@@ -4,7 +4,7 @@ metadata:
   name: retaguarda-ingress
   namespace: retaguarda
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: "retaguarda.bemfacil.digital"
+    external-dns.alpha.kubernetes.io/hostname: "poc-retaguarda.bemfacil.digital"
     alb.ingress.kubernetes.io/load-balancer-name: k8s-alb-retaguarda-poc
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
@@ -20,7 +20,7 @@ metadata:
 spec:
   ingressClassName: alb
   rules:
-  - host: retaguarda.bemfacil.digital
+  - host: poc-retaguarda.bemfacil.digital
     http:
       paths:
       - path: /
