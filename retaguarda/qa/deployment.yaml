@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: tomcat
-        image: 343236792564.dkr.ecr.us-east-1.amazonaws.com/bf-retaguarda:1.5.8-rds-priv
+        image: 343236792564.dkr.ecr.us-east-1.amazonaws.com/bf-retaguarda:1.5.10-rds-priv
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
